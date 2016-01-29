@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IAAK;EACH,MAAM,EAAE,CAAC;EACT,OAAO,EAAE,CAAC;EACV,QAAQ,EAAE,MAAM;;AAGlB,MAAO;EACL,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI",
+"sources": ["../sass/normalize.scss"],
+"names": [],
+"file": "layout.css"
+}
