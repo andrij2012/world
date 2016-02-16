@@ -1,12 +1,12 @@
 (function() {
   "use strict";
 
-  define(['three'], function(Three) {
+  define(['three'], function(THREE) {
     return {
       radius: 50,
-      segments: 16,
-      rings: 16,
-      material: new Three.MeshBasicMaterial({ color: 0xffff00 })
+      segments: 50,
+      rings: 50,
+      material: new THREE.MeshPhongMaterial()
     };
   });
 })();

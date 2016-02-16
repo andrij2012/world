@@ -1,42 +1,32 @@
 (function() {
   'use strict';
 
-  define(['three', 'app/earth/config'], function(Three, EarthConfig) {
-    var App = function() {
-      var scene    = new Three.Scene(),
-          camera   = new Three.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
-          renderer = new Three.WebGLRenderer();
+  define(['three', 'app/game'], function(THREE, Game) {
 
-      renderer.setSize(window.innerWidth, window.innerHeight);
+    /**
+     * App class. Initialize the game
+     * @constructor
+     */
+    function App() {
+      var _win     = window,
+          game     = new Game(),
+          renderer = new THREE.WebGLRenderer();
+
+      // Make application full-width
+      renderer.setSize(_win.innerWidth, _win.innerHeight);
       document.body.appendChild(renderer.domElement);
 
-      var //geometry = new Three.BoxGeometry(1, 1, 1),
-          //material = new Three.MeshBasicMaterial({ color: 0xffffff }),
-          //cube     = new Three.Mesh(geometry, material),
-          earth    = new Three.Mesh(
-            new Three.SphereGeometry(
-              EarthConfig.radius,
-              EarthConfig.segments,
-              EarthConfig.rings
-            ),
-            EarthConfig.material
-          );
+      // Start the game
+      game.start();
 
-      //scene.add(cube);
-      scene.add(earth);
-      camera.position.z = 300;
+      // Initialize the game's loop
+      var animate;
 
-      var render = function() {
-        requestAnimationFrame(render);
-
-        //cube.rotation.x += 0.01;
-        //cube.rotation.y += 0.01;
-
-        renderer.render(scene, camera);
-      };
-
-      render();
-    };
+      (animate = function() {
+        _win.requestAnimationFrame(animate);
+        game.update(renderer);
+      })();
+    }
 
     return new App();
   });
