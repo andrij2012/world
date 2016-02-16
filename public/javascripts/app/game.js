@@ -56,6 +56,8 @@
         background = initBackground();
         light      = initLight();
 
+        this.bindMouseWheelEvent();
+
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         scene  = new THREE.Scene();
         earth  = new THREE.Mesh(
@@ -86,6 +88,19 @@
         r.clear();
         r.render(background.scene, background.camera);
         r.render(scene, camera);
+      };
+
+      /**
+       * Camera mouse wheel handling
+       */
+      this.bindMouseWheelEvent = function() {
+        window.onmousewheel = function(e) {
+          if (e.deltaY > 0 && camera.position.z <= 220) {
+            camera.position.z += 10;
+          } else if (e.deltaY < 0 && camera.position.z >= 70) {
+            camera.position.z -= 10;
+          }
+        };
       };
     }
 
