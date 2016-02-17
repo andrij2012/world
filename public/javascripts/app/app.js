@@ -1,19 +1,20 @@
 (function() {
   'use strict';
 
-  define(['three', 'app/game'], function(THREE, Game) {
+  define(['three', 'app/game', 'app/settings'], function(THREE, Game, Settings) {
 
     /**
      * App class. Initialize the game
      * @constructor
      */
     function App() {
-      var _win     = window,
-          game     = new Game(),
+      this.settings = Settings;
+
+      var game     = new Game(),
           renderer = new THREE.WebGLRenderer();
 
       // Make application full-width
-      renderer.setSize(_win.innerWidth, _win.innerHeight);
+      renderer.setSize(this.settings.screen.width, this.settings.screen.height);
       document.body.appendChild(renderer.domElement);
 
       // Start the game
@@ -23,7 +24,7 @@
       var animate;
 
       (animate = function() {
-        _win.requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
         game.update(renderer);
       })();
     }

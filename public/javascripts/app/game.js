@@ -1,13 +1,15 @@
 (function() {
   "use strict";
 
-  define(['three', 'app/earth/config'], function(THREE, EarthConfig) {
+  define(['three', 'app/earth/config', 'app/settings'], function(THREE, EarthConfig, Settings) {
 
     /**
      * Game class
      * @constructor
      */
     function Game() {
+      this.settings = Settings;
+
       var that = this;
       var scene, camera, earth, background, light;
 
@@ -17,9 +19,9 @@
        */
       var initBackground = function() {
         var mesh = new THREE.Mesh(
-          new THREE.PlaneGeometry(2, 2, 0),
+          new THREE.PlaneGeometry(that.settings.background.position.x, that.settings.background.position.y, that.settings.background.position.z),
           new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture('images/galaxy_starfield.png')
+            map: THREE.ImageUtils.loadTexture(that.settings.background.texture)
           })
         );
 
@@ -32,7 +34,7 @@
         scene.add(camera);
         scene.add(mesh);
 
-        return { scene: scene, camera: camera };
+        return {scene: scene, camera: camera};
       };
 
       /**
@@ -40,10 +42,10 @@
        * @returns {THREE.SpotLight}
        */
       var initLight = function() {
-        var spotLight = new THREE.SpotLight(0xffffff);
+        var spotLight = new THREE.SpotLight(that.settings.light.color);
 
-        spotLight.position.set(50, 50, 400);
-        spotLight.intensity = 0.7;
+        spotLight.position.set(that.settings.light.position.x, that.settings.light.position.y, that.settings.light.position.z);
+        spotLight.intensity = that.settings.light.intensity;
 
         return spotLight;
       };
@@ -58,9 +60,15 @@
 
         this.bindMouseWheelEvent();
 
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        scene  = new THREE.Scene();
-        earth  = new THREE.Mesh(
+        camera = new THREE.PerspectiveCamera(
+          that.settings.camera.fov,
+          that.settings.camera.aspect,
+          that.settings.camera.near,
+          that.settings.camera.far
+        );
+
+        scene = new THREE.Scene();
+        earth = new THREE.Mesh(
           new THREE.SphereGeometry(
             EarthConfig.radius,
             EarthConfig.segments,
@@ -69,12 +77,10 @@
           EarthConfig.material
         );
 
-        camera.position.z = 300;
+        camera.position.z = that.settings.camera.distance;
 
         scene.add(earth);
         scene.add(light);
-
-        return that;
       };
 
       /**
@@ -82,7 +88,7 @@
        * @param {THREE.WebGLRenderer} r
        */
       this.update = function(r) {
-        earth.rotation.y += 0.01;
+        earth.rotation.y += 0.0001;
 
         r.autoClear = false;
         r.clear();
@@ -95,10 +101,10 @@
        */
       this.bindMouseWheelEvent = function() {
         window.onmousewheel = function(e) {
-          if (e.deltaY > 0 && camera.position.z <= 220) {
-            camera.position.z += 10;
-          } else if (e.deltaY < 0 && camera.position.z >= 70) {
-            camera.position.z -= 10;
+          if (e.deltaY > 0 && camera.position.z <= that.settings.camera.zoom.max) {
+            camera.position.z += that.settings.camera.zoom.factor;
+          } else if (e.deltaY < 0 && camera.position.z >= that.settings.camera.zoom.min) {
+            camera.position.z -= that.settings.camera.zoom.factor;
           }
         };
       };

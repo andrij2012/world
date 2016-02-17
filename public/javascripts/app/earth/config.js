@@ -3,9 +3,9 @@
 
   define(['three'], function(THREE) {
     return {
-      radius: 50,
-      segments: 50,
-      rings: 50,
+      radius: 10,
+      segments: 500,
+      rings: 500,
       material: new THREE.MeshPhongMaterial()
     };
   });
