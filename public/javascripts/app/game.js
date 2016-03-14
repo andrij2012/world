@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  define(['three', 'app/earth/config', 'app/settings'], function(THREE, EarthConfig, Settings) {
+  define(['three', 'app/earth/config', 'app/settings', 'app/earth-geometry'], function(THREE, EarthConfig, Settings, EarthGeometry) {
 
     /**
      * Game class
@@ -11,7 +11,7 @@
       this.settings = Settings;
 
       var that = this;
-      var scene, camera, earth, background, light;
+      var scene, camera, earth, background, light, buffer;
 
       /**
        * Initialize galaxy star field. Background view.
@@ -79,8 +79,13 @@
 
         camera.position.z = that.settings.camera.distance;
 
+
+        var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+        var mesh     = new THREE.Mesh(buffer, material);
+
         scene.add(earth);
         scene.add(light);
+        scene.add(mesh);
       };
 
       /**

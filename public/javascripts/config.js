@@ -3,7 +3,9 @@
     baseUrl: "/javascripts/",
     paths: {
       three: "lib/three.min",
-      game:  "app/game"
+      game:  "app/game",
+      d3: "lib/d3.min",
+      topojson: "lib/topojson.v1.min"
     },
     shim: {
       "three": {
